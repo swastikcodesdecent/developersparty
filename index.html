@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Janta Party — Coming Soon</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:        #0a0e14;
+    --bg-soft:   #0f1420;
+    --surface:   rgba(255,255,255,0.035);
+    --border:    rgba(255,255,255,0.08);
+    --text:      #e6ebf1;
+    --text-dim:  #8b96a8;
+    --accent:    #6ee7a1;
+    --accent-2:  #7aa2ff;
+    --accent-3:  #ffb454;
+
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body:    'Inter', sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html,body{ height:100%; }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+  }
+
+  /* ambient grid texture */
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* glow blobs */
+  body::after{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle 480px at 85% 10%, rgba(110,231,161,0.14), transparent 70%),
+      radial-gradient(circle 460px at 10% 90%, rgba(122,162,255,0.13), transparent 70%);
+    filter: blur(30px);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:2px solid var(--accent-2);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  .container{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 24px;
+    width:100%;
+  }
+
+  /* ============================================
+     HEADER / LOGO
+     ============================================ */
+  header{
+    padding:32px 0;
+    position:relative;
+    z-index:1;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.1rem;
+    letter-spacing:-0.01em;
+    justify-content:center;
+  }
+  .logo-mark{ width:36px; height:36px; flex-shrink:0; }
+  .logo-mark svg{ display:block; width:100%; height:100%; }
+  .logo-mark .lg-bracket{
+    transform-origin:center;
+    animation: bracket-pulse 3s ease-in-out infinite;
+  }
+  .logo-mark .lg-right{ animation-delay:0.15s; }
+  .logo-mark .lg-dot{ animation: dot-blink 1.6s steps(1) infinite; }
+  @keyframes bracket-pulse{
+    0%,100%{ transform:scale(1); opacity:1; }
+    50%{ transform:scale(1.04); opacity:0.85; }
+  }
+  @keyframes dot-blink{
+    0%,49%{ opacity:1; }
+    50%,100%{ opacity:0.25; }
+  }
+  .logo-text .dim{ color:var(--text-dim); font-weight:500; }
+
+  /* ============================================
+     MAIN
+     ============================================ */
+  main{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 0 60px;
+    position:relative;
+    z-index:1;
+  }
+
+  .cs-content{
+    text-align:center;
+  }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:7px 16px;
+    border-radius:100px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    color:var(--accent);
+    letter-spacing:0.04em;
+    margin-bottom:32px;
+    backdrop-filter: blur(10px);
+  }
+  .eyebrow .dot{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--accent);
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot{
+    0%{ box-shadow:0 0 0 0 rgba(110,231,161,0.5); }
+    70%{ box-shadow:0 0 0 6px rgba(110,231,161,0); }
+    100%{ box-shadow:0 0 0 0 rgba(110,231,161,0); }
+  }
+
+  h1{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(2.4rem, 8vw, 4.4rem);
+    line-height:1.08;
+    letter-spacing:-0.02em;
+    margin-bottom:20px;
+  }
+  h1 .accent-text{
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  .lead{
+    color:var(--text-dim);
+    font-size:1.05rem;
+    max-width:480px;
+    margin:0 auto 44px;
+  }
+
+  /* ---- Terminal: countdown rendered as code ---- */
+  .terminal{
+    max-width:460px;
+    margin:0 auto 44px;
+    background:var(--bg-soft);
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02);
+    overflow:hidden;
+    text-align:left;
+  }
+  .terminal-bar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 16px;
+    background:rgba(255,255,255,0.03);
+    border-bottom:1px solid var(--border);
+  }
+  .terminal-bar .tdot{ width:11px; height:11px; border-radius:50%; }
+  .tdot.red{ background:#ff5f57; }
+  .tdot.yellow{ background:#febc2e; }
+  .tdot.green{ background:#28c840; }
+  .terminal-bar .tname{
+    margin-left:auto;
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    color:var(--text-dim);
+  }
+  .terminal-body{
+    padding:22px 20px;
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    line-height:1.9;
+  }
+  .terminal-body .kw{ color:var(--accent-2); }
+  .terminal-body .str{ color:var(--accent); }
+  .terminal-body .com{ color:var(--text-dim); }
+  .terminal-body .num-val{ color:var(--accent-3); font-weight:600; }
+
+  /* countdown grid */
+  .countdown{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:14px;
+    max-width:460px;
+    margin:0 auto 44px;
+  }
+  .countdown .unit{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 8px;
+    backdrop-filter: blur(12px);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .countdown .unit:hover{
+    border-color:rgba(122,162,255,0.35);
+    transform:translateY(-3px);
+  }
+  .countdown .unit .val{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(1.6rem, 5vw, 2.2rem);
+    color:var(--text);
+    line-height:1.1;
+  }
+  .countdown .unit .label{
+    font-family:var(--font-mono);
+    font-size:0.7rem;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-top:6px;
+    display:block;
+  }
+
+  /* ---- Notify form ---- */
+  .notify-form{
+    display:flex;
+    gap:12px;
+    max-width:460px;
+    margin:0 auto 20px;
+    flex-wrap:wrap;
+  }
+  .notify-form input[type="email"]{
+    flex:1;
+    min-width:0;
+    padding:14px 18px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text);
+    font-family:var(--font-body);
+    font-size:0.95rem;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .notify-form input[type="email"]::placeholder{ color:var(--text-dim); }
+  .notify-form input[type="email"]:focus{
+    border-color:rgba(110,231,161,0.45);
+    background:rgba(255,255,255,0.05);
+    outline:none;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:14px 26px;
+    border-radius:10px;
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:0.95rem;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background: linear-gradient(135deg, var(--accent), #4fd587);
+    color:#06200f;
+  }
+  .btn-primary:hover{
+    transform:translateY(-2px);
+    box-shadow: 0 10px 30px -8px rgba(110,231,161,0.55);
+  }
+  .btn-primary:active{ transform:translateY(0); }
+
+  .form-msg{
+    font-family:var(--font-mono);
+    font-size:0.82rem;
+    color:var(--accent);
+    min-height:1.4em;
+    opacity:0;
+    transition: opacity 0.3s ease;
+  }
+  .form-msg.show{ opacity:1; }
+
+  /* ---- Social links ---- */
+  .social{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    margin-top:36px;
+  }
+  .social a{
+    width:42px; height:42px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    backdrop-filter: blur(10px);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    color:var(--text-dim);
+    transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+  .social a:hover{
+    border-color:var(--accent);
+    color:var(--accent);
+    transform:translateY(-2px);
+  }
+
+  /* ============================================
+     FOOTER
+     ============================================ */
+  footer{
+    padding:30px 0;
+    text-align:center;
+    font-family:var(--font-mono);
+    font-size:0.82rem;
+    color:var(--text-dim);
+    position:relative;
+    z-index:1;
+    border-top:1px solid var(--border);
+  }
+
+  /* ============================================
+     ANIMATIONS
+     ============================================ */
+  .fade-up{
+    opacity:0;
+    transform:translateY(20px);
+    animation: fade-up 0.8s ease forwards;
+  }
+  @keyframes fade-up{
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .delay-1{ animation-delay:0.1s; }
+  .delay-2{ animation-delay:0.2s; }
+  .delay-3{ animation-delay:0.3s; }
+  .delay-4{ animation-delay:0.4s; }
+  .delay-5{ animation-delay:0.5s; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+    .fade-up{ opacity:1; transform:none; }
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 560px){
+    .countdown{ gap:10px; }
+    .countdown .unit{ padding:14px 6px; }
+    .notify-form{ flex-direction:column; }
+    .notify-form .btn{ width:100%; }
+    h1{ font-size:2.4rem; }
+    .terminal-body{ font-size:0.78rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <a href="#" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="10" fill="url(#lg-grad)"/>
+          <path class="lg-bracket lg-left" d="M14 13 L8 20 L14 27" stroke="#0a0e14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path class="lg-bracket lg-right" d="M26 13 L32 20 L26 27" stroke="#0a0e14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle class="lg-dot" cx="20" cy="20" r="2.4" fill="#0a0e14"/>
+          <defs>
+            <linearGradient id="lg-grad" x1="0" y1="0" x2="40" y2="40">
+              <stop offset="0" stop-color="#6ee7a1"/>
+              <stop offset="1" stop-color="#7aa2ff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      <span class="logo-text">DJP <span class="dim">// Janta Party</span></span>
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="container cs-content">
+
+    <span class="eyebrow fade-up"><span class="dot"></span> Status: building in progress</span>
+
+    <h1 class="fade-up delay-1">
+      Something new is <span class="accent-text">compiling</span>.
+    </h1>
+
+    <p class="lead fade-up delay-2">
+      The full Developer Janta Party hub is on its way — a home for developers to connect,
+      collaborate, and ship real projects together. We're putting the finishing touches on it.
+    </p>
+
+    <!-- Terminal-style status block -->
+    <div class="terminal fade-up delay-3">
+      <div class="terminal-bar">
+        <span class="tdot red"></span>
+        <span class="tdot yellow"></span>
+        <span class="tdot green"></span>
+        <span class="tname">status.sh</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="kw">const</span> status = <span class="str">"building"</span>;</div>
+        <div><span class="kw">const</span> launch = <span class="str">"coming soon"</span>;</div>
+        <div class="com">// estimated time remaining</div>
+        <div><span class="kw">console</span>.log(<span class="num-val" id="etaLine">calculating...</span>);</div>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown fade-up delay-3" aria-label="Countdown to launch">
+      <div class="unit">
+        <span class="val" id="cd-days">--</span>
+        <span class="label">Days</span>
+      </div>
+      <div class="unit">
+        <span class="val" id="cd-hours">--</span>
+        <span class="label">Hours</span>
+      </div>
+      <div class="unit">
+        <span class="val" id="cd-mins">--</span>
+        <span class="label">Mins</span>
+      </div>
+      <div class="unit">
+        <span class="val" id="cd-secs">--</span>
+        <span class="label">Secs</span>
+      </div>
+    </div>
+
+    
+    <p class="form-msg fade-up delay-4" id="formMsg">You're on the list — see you at launch! 🚀</p>
+
+    
+
+  </div>
+</main>
+
+<footer>
+  <span>© 2026 Developer Janta Party — <a href="https://vmctechindia.in">VMC Tech India</a></span>
+</footer>
+
+<script>
+  // ============================================
+  // COUNTDOWN TIMER
+  // Set target launch date here (YYYY-MM-DDTHH:mm:ss)
+  // ============================================
+  const launchDate = new Date('2026-06-18T00:00:00').getTime();
+
+  const els = {
+    days:  document.getElementById('cd-days'),
+    hours: document.getElementById('cd-hours'),
+    mins:  document.getElementById('cd-mins'),
+    secs:  document.getElementById('cd-secs'),
+    eta:   document.getElementById('etaLine')
+  };
+
+  function updateCountdown(){
+    const now = new Date().getTime();
+    const diff = launchDate - now;
+
+    if (diff <= 0){
+      els.days.textContent = '00';
+      els.hours.textContent = '00';
+      els.mins.textContent = '00';
+      els.secs.textContent = '00';
+      els.eta.textContent = '"launched"';
+      return;
+    }
+
+    const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins  = Math.floor((diff / (1000 * 60)) % 60);
+    const secs  = Math.floor((diff / 1000) % 60);
+
+    els.days.textContent  = String(days).padStart(2, '0');
+    els.hours.textContent = String(hours).padStart(2, '0');
+    els.mins.textContent  = String(mins).padStart(2, '0');
+    els.secs.textContent  = String(secs).padStart(2, '0');
+
+    els.eta.textContent = `"${days}d ${hours}h until launch"`;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ============================================
+  // NOTIFY FORM (front-end only demo)
+  // ============================================
+  const form = document.getElementById('notifyForm');
+  const formMsg = document.getElementById('formMsg');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    if (!email) return;
+
+    // In production: send `email` to your backend / mailing list API here.
+    formMsg.classList.add('show');
+    form.reset();
+
+    setTimeout(() => formMsg.classList.remove('show'), 4000);
+  });
+</script>
+
+</body>
+</html>
